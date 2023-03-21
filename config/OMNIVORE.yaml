@@ -1,0 +1,6 @@
+MODEL:
+  NUM_CLASSES: [97, 300]
+  ARCH: omnivore_swinB_epic
+  MODEL_NAME: Omnivore
+  LOSS_FUNC: cross_entropy
+  DROPOUT_RATE: 0.5
