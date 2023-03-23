@@ -3,7 +3,13 @@ MODEL:
   MODEL_NAME: Omnivore
   WIN_LENGTH: 2
   HOP_SIZE: 0.5
+  NFRAMES: 32
+  MEAN: [0.485, 0.456, 0.406]
+  STD: [0.229, 0.224, 0.225]
 DATASET:
   NAME: 'Milly'
   LOCATION: '/vast/ffd2011/Milly-new/'
   FPS: 30
+DATALOADER:
+  NUM_WORKERS: 8
+  PIN_MEMORY: True
