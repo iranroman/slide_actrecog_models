@@ -20,7 +20,10 @@ class Omnivore(nn.Module):
     def __init__(self, cfg):
         super().__init__()
         self.omni = torch.hub.load("facebookresearch/omnivore:main", model=cfg.MODEL.ARCH)
+        self.heads = self.omni.heads
+        self.omni.heads = nn.Identity()
 
     def forward(self, x):
-        y = self.omni(x, input_type="video")
-        return y
+        shoul = self.omni(x, input_type="video")
+        y_raw = self.heads(shoul)
+        return shoul, y_raw

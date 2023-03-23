@@ -1,8 +1,8 @@
 import argparse
 import torch
 import sys
-from models import build_model
 from config.defaults import get_cfg
+from slide_net import slide
 
 def parse_args():
     """
@@ -65,7 +65,7 @@ def main():
     """
     args = parse_args()
     cfg = load_config(args)
-    model = build_model(cfg)
+    slide(cfg)
 
 
 if __name__ == "__main__":
