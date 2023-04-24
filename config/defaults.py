@@ -36,6 +36,11 @@ _C.DATALOADER = CfgNode()
 _C.DATALOADER.NUM_WORKERS = 8
 _C.DATALOADER.PIN_MEMORY = True
 
+# -----------------------------------------------------------------------------
+# output options
+# -----------------------------------------------------------------------------
+_C.OUTPUT = CfgNode()
+_C.OUTPUT.LOCATION = ''
 
 def get_cfg():
     """

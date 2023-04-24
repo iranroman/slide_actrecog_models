@@ -33,7 +33,7 @@ def slide(cfg):
 
         # save model outputs
         for i in range(len(output[0])):
-            vid_path = f'/vast/irr2020/omni_milly/{vid_id[i]}'
+            vid_path = f'{cfg.OUTPUT.LOCATION}/{vid_id[i]}_{cfg.DATASET.FPS}FPS'
             Path(vid_path,'shoulders').mkdir(parents=True, exist_ok=True)
             Path(vid_path,'y_hat_raw').mkdir(parents=True, exist_ok=True)
             np.save(Path(vid_path,'shoulders',out_tmpl.format(int(stop_frame[i]))),output[0][i].detach().cpu().numpy())

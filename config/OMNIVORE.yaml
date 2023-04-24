@@ -8,8 +8,10 @@ MODEL:
   STD: [0.229, 0.224, 0.225]
 DATASET:
   NAME: 'Milly'
-  LOCATION: '/vast/ffd2011/Milly-new/'
+  LOCATION: '/datasets/BBN/'
   FPS: 30
 DATALOADER:
-  NUM_WORKERS: 8
+  NUM_WORKERS: 12
   PIN_MEMORY: True
+OUTPUT:
+  LOCATION: '/datasets/omni_bbn'

@@ -33,8 +33,7 @@ def retry_load_images(image_paths, retry=10, backend="pytorch", flow=False):
 
 def pack_frames_to_video_clip(data_dir, video_record, model_nframes):
     # Load video by loading its extracted frames
-    path_to_video = '{}/{}/rgb_frames/{}'.format(data_dir,
-                                                    video_record['vid_id'].split('_')[0],
+    path_to_video = '{}{}'.format(data_dir,
                                                     video_record['vid_id'])
     img_tmpl = "frame_{:010d}.jpg"
     frame_idx = np.flip(np.linspace(video_record['stop_frame'], video_record['start_frame'], model_nframes).astype('long'))
@@ -63,16 +62,16 @@ class Milly(torch.utils.data.Dataset):
         self.model_std = cfg.MODEL.STD
 
     def get_milly_items(self):
-        milly_participants = os.listdir(self.data_dir)
-        participant_videos = [os.listdir(os.path.join(self.data_dir,p,'rgb_frames')) for p in milly_participants]
-        participant_videos = [item for sublist in participant_videos for item in sublist]
+        participant_videos = os.listdir(self.data_dir)
+        #participant_videos = [os.listdir(os.path.join(self.data_dir,p)) for p in milly_participants]
+        #participant_videos = [item for sublist in participant_videos for item in sublist]
         
         # accumulate the number of windows that fit in a video
         self._video_records = {}
         irecord = 0
         for v in participant_videos:
-            nframes = len(os.listdir(os.path.join(self.data_dir,v.split('_')[0],'rgb_frames',v)))
-            start_frame = 0
+            nframes = len(os.listdir(os.path.join(self.data_dir,v)))
+            start_frame = 1
             stop_frame = self.dataset_fps * self.model_length
             while stop_frame < nframes:
                 self._video_records[irecord] = {
