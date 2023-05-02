@@ -186,7 +186,7 @@ class FrameOutput:
     def output(self, im, t):
         cv2.imwrite(self.src.format(t), im)
 
-def run(src, n=1, fps=None, out_file=None, out_dir='augmentations', show=None, overwrite=False):
+def run(src, out_file=None, n=1, fps=None, out_dir='augmentations', show=None, overwrite=False):
     '''Run augmentations over a video
     
     
@@ -204,23 +204,30 @@ def run(src, n=1, fps=None, out_file=None, out_dir='augmentations', show=None, o
         else:
             out_file = f'{os.path.splitext(out_file)[0]}_aug_{{}}.mp4'
 
+    # create N augmentations
     for i_aug in range(n):
+        # add the index to the filename
         outf = out_file.format(i_aug)
+        # create the parent directory if it doesn't exist
         os.makedirs(os.path.dirname(outf), exist_ok=True)
         print(outf)
         if not overwrite and os.path.exists(outf):
             print('exists already')
             continue
         
+        # create the video input and pass its FPS to the video output
         vin = FrameInput(src, 30, fps, give_time=False) if os.path.isdir(src) else VideoInput(src, fps, give_time=False)
         vin.__enter__()
         fps = fps or vin.dest_fps
         vout = FrameOutput(outf) if not outf.endswith('mp4') else VideoOutput(outf, fps, show=show)
+
         with vin, vout:
             aug = get_augmentation(None)
-            # TODO:
-            with open(outf+'.npy', 'wb') as f:  # TODO: how to make this actually reproduceable - probably need to store the seed
-                pickle.dump([aug, ], f)
+            ## TODO: make this properly reproduceable (output random seed and allow loading augmentations from file)
+            #with open(outf+'.npy', 'wb') as f:
+            #    pickle.dump([aug, ], f)
+
+            # input -> aug -> output
             for i, im in vin:
                 im2 = aug(im)[0].numpy()
                 vout.output(im2, i)
